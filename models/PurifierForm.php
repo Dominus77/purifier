@@ -50,26 +50,28 @@ class PurifierForm extends Model
 
     /**
      * Начальная таблица Модель
+     * @param int $limit
      * @return mixed
      */
-    public function getBeforeData()
+    public function getBeforeData($limit=1)
     {
         /** @var  $model object */
         $model = $this->before_table;
         $column = $this->getBeforeColumn();
-        return $model::find()->select([$column])->all();
+        return $model::find()->select([$column])->limit($limit)->all();
     }
 
     /**
      * Конечная таблица Модель
+     * @param int $limit
      * @return mixed
      */
-    public function getAfterData()
+    public function getAfterData($limit=1)
     {
         /** @var  $model object */
         $model = $this->after_table;
         $column = $this->getAfterColumn();
-        return $model::find()->select([$column])->all();
+        return $model::find()->select([$column])->limit($limit)->all();
     }
 
     /**
