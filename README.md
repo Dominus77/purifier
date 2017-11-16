@@ -1,7 +1,7 @@
 HTML Purifier Converter
 =======================
 
-Пример модуля инструмента обработки текста с помощью [HTML Purifier](http://www.yiiframework.com/doc-2.0/yii-helpers-htmlpurifier.html)
+Пример модуля Yii2, инструмента обработки текста с помощью [HTML Purifier](http://www.yiiframework.com/doc-2.0/yii-helpers-htmlpurifier.html)
 
 Подключение:
 
