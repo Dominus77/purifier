@@ -109,13 +109,13 @@ class PurifierForm extends Model
     /**
      * @return array
      */
-    public function getDataPuriferArray()
+    public function getDataPurifierArray()
     {
         $column = $this->getBeforeColumn();
         $data = $this->getBeforeData();
         $array = [];
         foreach ($data as $item) {
-            $array[] = $this->processPurifer(ArrayHelper::getValue($item, $column));
+            $array[] = $this->processPurifier(ArrayHelper::getValue($item, $column));
         }
         return $array;
     }
@@ -156,12 +156,12 @@ class PurifierForm extends Model
      * @see http://htmlpurifier.org/live/configdoc/plain.html
      * @return string
      */
-    public function processPurifer($data, $options = [])
+    public function processPurifier($data, $options = [])
     {
-        $options = [
+        $options = ArrayHelper::merge([
             'HTML.ForbiddenAttributes' => $this->getForbiddenAttributesArray(),
             'HTML.ForbiddenElements' => $this->getForbiddenElementsArray(),
-        ];
+        ], $options);
         $purifier = new HtmlPurifier();
         return $purifier->process($data, $options);
     }

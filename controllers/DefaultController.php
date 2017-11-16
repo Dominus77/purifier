@@ -44,7 +44,7 @@ class DefaultController extends Controller
         $after_data = [];
         if ($model->load(Yii::$app->request->post())) {
             $before_data = $model->getDataArray();
-            $after_data = $model->getDataPuriferArray();
+            $after_data = $model->getDataPurifierArray();
         }
         return $this->render('index', [
             'model' => $model,
