@@ -66,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         /** @var  $before_data array */
         if ($before_data) {
+            echo Html::tag('h2', 'Исходный текст', []);
             foreach ($before_data as $item) {
                 echo $this->render('_list', ['item' => $item]);
             }
@@ -76,6 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         /** @var  $after_data array */
         if ($after_data) {
+            echo Html::tag('h2', 'Обработанный текст', []);
             foreach ($after_data as $item) {
                 echo $this->render('_list', ['item' => $item]);
             }
