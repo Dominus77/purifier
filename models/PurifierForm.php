@@ -19,7 +19,7 @@ class PurifierForm extends Model
     public $after_table;            // Конечная таблица Модель
     public $before_column;          // Колонка в начальной таблице
     public $after_column;           // Колонка в конечной таблице
-    public $forbidden_elements;         // Запрещёные тэги
+    public $forbidden_elements;     // Запрещёные тэги
     public $forbidden_attributes;   // Запрещёные аттрибуты у тэгов
 
     /**
@@ -53,7 +53,7 @@ class PurifierForm extends Model
      * @param int $limit
      * @return mixed
      */
-    public function getBeforeData($limit=5)
+    public function getBeforeData($limit = 5)
     {
         /** @var  $model object */
         $model = $this->before_table;
@@ -66,7 +66,7 @@ class PurifierForm extends Model
      * @param int $limit
      * @return mixed
      */
-    public function getAfterData($limit=5)
+    public function getAfterData($limit = 5)
     {
         /** @var  $model object */
         $model = $this->after_table;
@@ -126,7 +126,7 @@ class PurifierForm extends Model
     public function getForbiddenElementsArray()
     {
         $result = [];
-        if($this->forbidden_elements) {
+        if ($this->forbidden_elements) {
             $string = $this->forbidden_elements;
             $string = trim($string);
             $string = preg_replace('/\s/', '', $string);
@@ -141,7 +141,7 @@ class PurifierForm extends Model
     public function getForbiddenAttributesArray()
     {
         $result = [];
-        if($this->forbidden_attributes) {
+        if ($this->forbidden_attributes) {
             $string = $this->forbidden_attributes;
             $string = trim($string);
             $string = preg_replace('/\s/', '', $string);
