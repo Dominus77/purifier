@@ -53,7 +53,7 @@ class PurifierForm extends Model
      * @param int $limit
      * @return mixed
      */
-    public function getBeforeData($limit=1)
+    public function getBeforeData($limit=5)
     {
         /** @var  $model object */
         $model = $this->before_table;
@@ -66,7 +66,7 @@ class PurifierForm extends Model
      * @param int $limit
      * @return mixed
      */
-    public function getAfterData($limit=1)
+    public function getAfterData($limit=5)
     {
         /** @var  $model object */
         $model = $this->after_table;
