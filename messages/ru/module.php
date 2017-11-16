@@ -3,10 +3,10 @@
 return [
     'Purifier Converter' => 'Purifier конвертер',
 
-    'Before Table' => 'Исходная таблица',
-    'After Table' => 'Конечная таблица',
-    'Before Column' => 'Исходная колонка',
-    'After Column' => 'Конечная колонка',
-    'Forbidden HTML Elements' => 'Запрещённые элементы (тэги)',
-    'Forbidden attributes for HTML Tags' => 'Запрещённые аттрибуты у тэгов',
+    'Before Table' => 'Исходная модель',
+    'After Table' => 'Конечная модель',
+    'Before Column' => 'Исходный атрибут',
+    'After Column' => 'Конечный атрибут',
+    'Forbidden HTML Elements' => 'Запрещённые HTML элементы (тэги)',
+    'Forbidden attributes for HTML Tags' => 'Запрещённые аттрибуты у HTML элементов',
 ];
