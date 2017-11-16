@@ -28,7 +28,7 @@ class PurifierForm extends Model
     public function rules()
     {
         return [
-            [['before_table', 'after_table', 'before_column', 'after_column'], 'required'],
+            [['before_table', 'before_column'], 'required'],
             [['before_table', 'after_table', 'before_column', 'after_column', 'forbidden_attributes', 'forbidden_elements'], 'string'],
         ];
     }
