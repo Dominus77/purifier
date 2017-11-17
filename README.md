@@ -36,3 +36,6 @@ $config = [
 Url::to(['/purifier/default/index']);
 ```
 
+License
+-----
+The BSD License (BSD). Please see [License File](https://github.com/Dominus77/purifier/blob/master/LICENSE.md) for more information.
