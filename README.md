@@ -9,7 +9,7 @@ HTML Purifier Converter
 * Обработка текста HTML Purifier по умолчанию;
 * Предпросмотр перед сохранением;
 
-Всё это дело настраивается в модели [PurifierForm](https://github.com/Dominus77/purifier/blob/753ca900e903ab865f0cf0ed1a4356647c202151/models/PurifierForm.php)
+Всё это дело настраивается в модели [PurifierForm](https://github.com/Dominus77/purifier/tree/master/models)
 
 Подключение:
 
