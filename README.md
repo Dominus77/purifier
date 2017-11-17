@@ -1,7 +1,7 @@
 HTML Purifier Converter
 =======================
 
-Модуль Yii2, инструмент пакетной обработки текста в модели с помощью [HTML Purifier](http://www.yiiframework.com/doc-2.0/yii-helpers-htmlpurifier.html) и пакетного сохранения в указанную колонку модели.
+Модуль Yii2, инструмент пакетной обработки текста с помощью [HTML Purifier](http://www.yiiframework.com/doc-2.0/yii-helpers-htmlpurifier.html) и пакетного сохранения в указанную колонку модели.
 
 По умолчанию в модуле доступно:
 * Удаление HTML тэгов, указываются в поле через запятую;
