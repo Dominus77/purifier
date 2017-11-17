@@ -83,25 +83,33 @@ class PurifierForm extends Model
 
     /**
      * Обновление данных в колонке
-     * @return bool
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\db\Exception
      */
-    public function getColumnUpdate()
+    public function processColumnUpdate()
     {
-        $error = [];
         $after_column = $this->getAfterColumn();
         $column = $this->getBeforeColumn();
         /** @var  $model object */
         $model = $this->model_namespace;
-        $models = $model::find()->select(['id', $column, $after_column])->all();
-        foreach ($models as $item) {
-            /** @var  $one object */
-            $one = $model::findOne($item->id);
-            $one->$after_column = $this->processPurifier($item->$column);
-            if (!$one->save())
-                $error[] = Module::t('module', 'Error while saving item with id:{:Id}', [':Id' => $one->id]);
+        $models = $model::find()->select(['id', $column])->all();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            foreach ($models as $item) {
+                /** @var  $one object */
+                $one = $model::findOne($item->id);
+                $one->$after_column = $this->processPurifier($item->$column);
+                $one->save();
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
         }
-        if (!empty($error))
-            return $error;
         return true;
     }
 

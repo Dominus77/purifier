@@ -12,7 +12,6 @@ return [
     'Preview' => 'Preview',
     'Converting' => 'Converting',
 
-    'Error while saving item with id:{:Id}' => 'Error while saving item with id:{:Id}',
     'Error in data processing!' => 'Error in data processing!',
-    'The data was successfully processed.' => 'The data was successfully processed.',
+    'The data has been successfully processed and saved.' => 'The data has been successfully processed and saved.',
 ];

@@ -65,15 +65,9 @@ class DefaultController extends Controller
     {
         $model = new PurifierForm();
         if ($model->load(Yii::$app->request->post())) {
-            $result = $model->getColumnUpdate();
+            $result = $model->processColumnUpdate();
             if ($result === true) {
-                Yii::$app->session->setFlash('success', Module::t('module', 'The data was successfully processed.'));
-            } else if (is_array($result)) {
-                $string = '';
-                foreach ($result as $item) {
-                    $string .= $item . '<br>';
-                }
-                Yii::$app->session->setFlash('danger', $string);
+                Yii::$app->session->setFlash('success', Module::t('module', 'The data has been successfully processed and saved.'));
             } else {
                 Yii::$app->session->setFlash('danger', Module::t('module', 'Error in data processing!'));
             }

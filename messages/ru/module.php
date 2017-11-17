@@ -12,7 +12,6 @@ return [
     'Preview' => 'Предпросмотр',
     'Converting' => 'Конвертировать',
 
-    'Error while saving item with id:{:Id}' => 'Ошибка при сохранении элемента с id:{:Id}',
     'Error in data processing!' => 'Ошибка в обработке данных!',
-    'The data was successfully processed.' => 'Данные успешно обработаны.',
+    'The data has been successfully processed and saved.' => 'Данные успешно обработаны и сохранены.',
 ];
