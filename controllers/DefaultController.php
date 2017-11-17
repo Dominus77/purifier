@@ -8,7 +8,6 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use modules\purifier\models\PurifierForm;
 use modules\purifier\Module;
-use yii\helpers\VarDumper;
 
 /**
  * Class DefaultController

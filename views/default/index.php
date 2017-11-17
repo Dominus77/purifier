@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-use yii\widgets\ListView;
 use modules\purifier\Module;
 
 /* @var $this yii\web\View */
