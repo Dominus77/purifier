@@ -115,19 +115,19 @@ class PurifierForm extends Model
 
     /**
      * Обработка текста HTML Purifier
-     * @param $data
+     * @param string $string
      * @param array $options
      * @see http://htmlpurifier.org/live/configdoc/plain.html
      * @return string
      */
-    public function processPurifier($data, $options = [])
+    public function processPurifier($string, $options = [])
     {
         $options = ArrayHelper::merge([
             'HTML.ForbiddenAttributes' => $this->getForbiddenAttributesArray(),
             'HTML.ForbiddenElements' => $this->getForbiddenElementsArray(),
         ], $options);
         $purifier = new HtmlPurifier();
-        return $purifier->process($data, $options);
+        return $purifier->process($string, $options);
     }
 
     /**
@@ -160,7 +160,7 @@ class PurifierForm extends Model
 
     /**
      * Удаляем пробелы в строке
-     * @param $string
+     * @param string $string
      * @return mixed|string
      */
     public function removingSpaces($string = '')
