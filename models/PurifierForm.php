@@ -139,10 +139,7 @@ class PurifierForm extends Model
     {
         $result = [];
         if ($this->forbidden_elements) {
-            $string = $this->forbidden_elements;
-            $string = trim($string);
-            $string = preg_replace('/\s/', '', $string);
-            $result = explode(',', $string);
+            $result = explode(',', $this->removingSpaces($this->forbidden_elements));
         }
         return $result;
     }
@@ -156,11 +153,20 @@ class PurifierForm extends Model
     {
         $result = [];
         if ($this->forbidden_attributes) {
-            $string = $this->forbidden_attributes;
-            $string = trim($string);
-            $string = preg_replace('/\s/', '', $string);
-            $result = explode(',', $string);
+            $result = explode(',', $this->removingSpaces($this->forbidden_attributes));
         }
         return $result;
+    }
+
+    /**
+     * Удаляем пробелы в строке
+     * @param $string
+     * @return mixed|string
+     */
+    public function removingSpaces($string = '')
+    {
+        $string = trim($string);
+        $string = preg_replace('/\s/', '', $string);
+        return $string;
     }
 }
