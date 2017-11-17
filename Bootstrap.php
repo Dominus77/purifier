@@ -29,6 +29,7 @@ class Bootstrap implements BootstrapInterface
             [
                 // объявление правил здесь
                 'purifier' => 'purifier/default/index',
+                'purifier/<_a:[\w\-]+>' => 'purifier/default/<_a>',
             ]
         );
     }

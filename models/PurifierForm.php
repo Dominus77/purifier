@@ -7,7 +7,6 @@ use yii\base\Model;
 use yii\helpers\HtmlPurifier;
 use yii\helpers\ArrayHelper;
 use modules\purifier\Module;
-use yii\helpers\VarDumper;
 
 /**
  * Class PurifierForm
@@ -15,10 +14,9 @@ use yii\helpers\VarDumper;
  */
 class PurifierForm extends Model
 {
-    public $before_table;           // Начальная таблица Модель
-    public $after_table;            // Конечная таблица Модель
-    public $before_column;          // Колонка в начальной таблице
-    public $after_column;           // Колонка в конечной таблице
+    public $model_namespace;        // Модель Namespace
+    public $before_column;          // Исходная колонка
+    public $after_column;           // Конечная колонка
     public $forbidden_elements;     // Запрещёные тэги
     public $forbidden_attributes;   // Запрещёные аттрибуты у тэгов
 
@@ -28,8 +26,8 @@ class PurifierForm extends Model
     public function rules()
     {
         return [
-            [['before_table', 'before_column'], 'required'],
-            [['before_table', 'after_table', 'before_column', 'after_column', 'forbidden_attributes', 'forbidden_elements'], 'string'],
+            [['model_namespace', 'before_column', 'after_column'], 'required'],
+            [['model_namespace', 'before_column', 'after_column', 'forbidden_attributes', 'forbidden_elements'], 'string'],
         ];
     }
 
@@ -39,8 +37,7 @@ class PurifierForm extends Model
     public function attributeLabels()
     {
         return [
-            'before_table' => Module::t('module', 'Before Table'),
-            'after_table' => Module::t('module', 'After Table'),
+            'model_namespace' => Module::t('module', 'Model'),
             'before_column' => Module::t('module', 'Before Column'),
             'after_column' => Module::t('module', 'After Column'),
             'forbidden_elements' => Module::t('module', 'Forbidden HTML Elements'),
@@ -49,108 +46,67 @@ class PurifierForm extends Model
     }
 
     /**
-     * Начальная таблица Модель
-     * @param int $limit
+     * Исходная колонка
      * @return mixed
      */
-    public function getBeforeData($limit = 5)
-    {
-        /** @var  $model object */
-        $model = $this->before_table;
-        $column = $this->getBeforeColumn();
-        return $model::find()->select([$column])->limit($limit)->all();
-    }
-
-    /**
-     * Конечная таблица Модель
-     * @param int $limit
-     * @return mixed
-     */
-    public function getAfterData($limit = 5)
-    {
-        /** @var  $model object */
-        $model = $this->after_table;
-        $column = $this->getAfterColumn();
-        return $model::find()->select([$column])->limit($limit)->all();
-    }
-
-    /**
-     * Начальная колонка в начальной таблице
-     * @return mixed
-     */
-    public function getBeforeColumn()
+    protected function getBeforeColumn()
     {
         return $this->before_column;
     }
 
     /**
-     * Конечная колонка в конечной таблице
+     * Конечная колонка
      * @return mixed
      */
-    public function getAfterColumn()
+    protected function getAfterColumn()
     {
         return $this->after_column;
     }
 
     /**
+     * Данные предварительного просмотра
+     * @param int $limit
      * @return array
      */
-    public function getDataArray()
+    public function getPreviewData($limit = 1)
     {
+        /** @var  $model object */
+        $model = $this->model_namespace;
         $column = $this->getBeforeColumn();
-        $data = $this->getBeforeData();
+        $query = $model::find()->select([$column])->limit($limit)->all();
         $array = [];
-        foreach ($data as $item) {
+        foreach ($query as $item) {
             $array[] = ArrayHelper::getValue($item, $column);
         }
         return $array;
     }
 
     /**
-     * @return array
+     * Обновление данных в колонке
+     * @return bool
      */
-    public function getDataPurifierArray()
+    public function getColumnUpdate()
     {
+        $error = [];
+        $after_column = $this->getAfterColumn();
         $column = $this->getBeforeColumn();
-        $data = $this->getBeforeData();
-        $array = [];
-        foreach ($data as $item) {
-            $array[] = $this->processPurifier(ArrayHelper::getValue($item, $column));
+        /** @var  $model object */
+        $model = $this->model_namespace;
+        $models = $model::find()->select(['id', $column, $after_column])->all();
+        foreach ($models as $item) {
+            /** @var  $one object */
+            $one = $model::findOne($item->id);
+            $one->$after_column = $this->processPurifier($item->$column);
+            if (!$one->save())
+                $error[] = Module::t('module', 'Error while saving item with id:{:Id}', [':Id' => $one->id]);
         }
-        return $array;
+        if (!empty($error))
+            return $error;
+        return true;
     }
 
     /**
-     * @return array
-     */
-    public function getForbiddenElementsArray()
-    {
-        $result = [];
-        if ($this->forbidden_elements) {
-            $string = $this->forbidden_elements;
-            $string = trim($string);
-            $string = preg_replace('/\s/', '', $string);
-            $result = explode(',', $string);
-        }
-        return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public function getForbiddenAttributesArray()
-    {
-        $result = [];
-        if ($this->forbidden_attributes) {
-            $string = $this->forbidden_attributes;
-            $string = trim($string);
-            $string = preg_replace('/\s/', '', $string);
-            $result = explode(',', $string);
-        }
-        return $result;
-    }
-
-    /**
+     * Обработка текста HTML Purifier
      * @param $data
      * @param array $options
      * @see http://htmlpurifier.org/live/configdoc/plain.html
@@ -164,5 +120,39 @@ class PurifierForm extends Model
         ], $options);
         $purifier = new HtmlPurifier();
         return $purifier->process($data, $options);
+    }
+
+    /**
+     * Запрещённые тэги
+     * @see http://htmlpurifier.org/live/configdoc/plain.html#HTML.ForbiddenElements
+     * @return array
+     */
+    protected function getForbiddenElementsArray()
+    {
+        $result = [];
+        if ($this->forbidden_elements) {
+            $string = $this->forbidden_elements;
+            $string = trim($string);
+            $string = preg_replace('/\s/', '', $string);
+            $result = explode(',', $string);
+        }
+        return $result;
+    }
+
+    /**
+     * Запрещённые атрибуты тэгов
+     * @see http://htmlpurifier.org/live/configdoc/plain.html#HTML.ForbiddenAttributes
+     * @return array
+     */
+    protected function getForbiddenAttributesArray()
+    {
+        $result = [];
+        if ($this->forbidden_attributes) {
+            $string = $this->forbidden_attributes;
+            $string = trim($string);
+            $string = preg_replace('/\s/', '', $string);
+            $result = explode(',', $string);
+        }
+        return $result;
     }
 }

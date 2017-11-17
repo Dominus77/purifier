@@ -5,6 +5,7 @@ namespace modules\purifier\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use modules\purifier\models\PurifierForm;
 use modules\purifier\Module;
 use yii\helpers\VarDumper;
@@ -30,26 +31,54 @@ class DefaultController extends Controller
                     ],
                 ],
             ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'converting' => ['POST'],
+                ],
+            ],
         ];
     }
 
     /**
-     * Renders the index view for the module
+     * Форма и предпросмотр
      * @return string
      */
     public function actionIndex()
     {
         $model = new PurifierForm();
-        $before_data = [];
-        $after_data = [];
         if ($model->load(Yii::$app->request->post())) {
-            $before_data = $model->getDataArray();
-            $after_data = $model->getDataPurifierArray();
+            $items = $model->getPreviewData(3);
+            return $this->render('index', [
+                'model' => $model,
+                'items' => $items,
+            ]);
         }
         return $this->render('index', [
             'model' => $model,
-            'before_data' => $before_data,
-            'after_data' => $after_data,
         ]);
+    }
+
+    /**
+     * Обработка данных
+     */
+    public function actionConverting()
+    {
+        $model = new PurifierForm();
+        if ($model->load(Yii::$app->request->post())) {
+            $result = $model->getColumnUpdate();
+            if ($result === true) {
+                Yii::$app->session->setFlash('success', Module::t('module', 'The data was successfully processed.'));
+            } else if (is_array($result)) {
+                $string = '';
+                foreach ($result as $item) {
+                    $string .= $item . '<br>';
+                }
+                Yii::$app->session->setFlash('danger', $string);
+            } else {
+                Yii::$app->session->setFlash('danger', Module::t('module', 'Error in data processing!'));
+            }
+        }
+        $this->redirect('index');
     }
 }
