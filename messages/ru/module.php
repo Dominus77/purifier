@@ -7,7 +7,7 @@ return [
     'Before Column' => 'Исходный атрибут модели',
     'After Column' => 'Конечный атрибут модели',
     'Forbidden HTML Elements' => 'Запрещённые HTML элементы (тэги)',
-    'Forbidden attributes for HTML Tags' => 'Запрещённые аттрибуты у HTML элементов',
+    'Forbidden attributes for HTML Tags' => 'Запрещённые атрибуты у HTML элементов',
 
     'Preview' => 'Предпросмотр',
     'Converting' => 'Конвертировать',
