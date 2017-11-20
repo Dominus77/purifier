@@ -1,4 +1,4 @@
-HTML Purifier Converter
+Yii2 HTML Purifier Converter
 =======================
 
 Инструмент обработки текста с помощью [HTML Purifier](http://www.yiiframework.com/doc-2.0/yii-helpers-htmlpurifier.html) и пакетного сохранения в указанную колонку модели.
@@ -36,6 +36,3 @@ $config = [
 Url::to(['/purifier/default/index']);
 ```
 
-License
------
-The BSD License (BSD). Please see [License File](https://github.com/Dominus77/purifier/blob/master/LICENSE.md) for more information.
